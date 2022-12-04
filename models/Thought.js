@@ -1,5 +1,5 @@
 // Include schema for Reactions as a subdocument to Thought
-const { Schema, model, models } = require("mongoose");
+const { Schema, model, models, Types } = require("mongoose");
 
 const thoughtSchema = new Schema(
   {
@@ -22,7 +22,7 @@ const thoughtSchema = new Schema(
       {
         reactionID: {
           type: Schema.Types.ObjectId,
-          default: new Schema.Types.ObjectId(),
+          default: new Types.ObjectId,
         },
         reactionBody: {
           type: String,
@@ -49,7 +49,7 @@ const thoughtSchema = new Schema(
   }
 );
 
-thoughtSchema.virtuals("reactionCount").get(function () {
+thoughtSchema.virtual("reactionCount").get(function () {
   return reactions.length;
 });
 

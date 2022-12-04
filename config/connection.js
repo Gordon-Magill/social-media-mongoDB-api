@@ -5,4 +5,4 @@ connect('mongodb://localhost/socialMediaApiDB', {
   useUnifiedTopology: true,
 });
 
-module.exports = {connection};
+module.exports = connection;
