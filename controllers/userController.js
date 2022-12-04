@@ -47,10 +47,20 @@ function deleteUserById(req,res) {
         })
 }
 
+function addFriendById(req,res){
+
+}
+
+function deleteFriendById(){
+    
+}
+
 module.exports = {
     getAllUsers,
     createUser,
     getUserById,
     updateUserById,
     deleteUserById,
+    addFriendById,
+    deleteFriendById
 }

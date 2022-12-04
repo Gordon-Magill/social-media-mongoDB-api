@@ -24,9 +24,9 @@ function getThoughtById(req,res){
         .catch(err => res.status(500).json(err))
 };
 
-// function updateThoughtById(req,res){
-//     return null
-// }
+function updateThoughtById(req,res){
+    
+}
 
 function deleteThoughtById(req,res){
     Thought.findOneAndDelete({_id: req.params.thoughtId},
@@ -39,10 +39,20 @@ function deleteThoughtById(req,res){
         })
 }
 
+function addReactionById(req,res){
+
+}
+
+function deleteReactionById(req,res){
+    
+}
+
 module.exports = {
     getAllThoughts,
     createThought,
     getThoughtById,
-    // updateThoughtById,
-    deleteThoughtById
+    updateThoughtById,
+    deleteThoughtById,
+    addReactionById,
+    deleteReactionById
 }
