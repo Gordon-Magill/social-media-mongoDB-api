@@ -1,18 +1,18 @@
 const Thought = require('../models/Thought')
 
-getAllThoughts(req,res){
+function getAllThoughts(req,res){
     Thought.find()
         .then(thoughts => res.status(200).json(thoughts))
         .catch(err => res.status(500).json(err));
 };
 
-createThought(req,res){
+function createThought(req,res){
     Thought.create(req.body)
         .then(newData => res.status(200).json(newData))
         .catch(err => res.status(500).json(err))
 };
 
-getThoughtById(req,res){
+function getThoughtById(req,res){
     Thought.findOne({_id: req.params.toughtId})
         .select('-__v')
         .populate('reactions')
@@ -24,11 +24,11 @@ getThoughtById(req,res){
         .catch(err => res.status(500).json(err))
 };
 
-// updateThoughtById(req,res){
+// function updateThoughtById(req,res){
 //     return null
 // }
 
-deleteThoughtById(req,res){
+function deleteThoughtById(req,res){
     Thought.findOneAndDelete({_id: req.params.thoughtId},
         (err, data) => {
             if (data) {

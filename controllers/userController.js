@@ -1,18 +1,18 @@
 const User = require('../models/User')
 
-getAllUsers(req,res) {
+function getAllUsers(req,res) {
     User.find()
         .then(users => res.status(200).json(users))
         .catch(err => res.status(500).json(err))
 }
 
-createUser(req,res) {
+function createUser(req,res) {
     User.create(req.body)
         .then(newData => res.status(200).json(newData))
         .catch(err => res.status(500).json(err))
 }
 
-getUserById(req,res){
+function getUserById(req,res){
     User.findOne({_id: req.params.userID})
         .select('-__v')
         .populate('thoughts')
@@ -25,13 +25,18 @@ getUserById(req,res){
         .catch(err => res.status(500).json(err))
 }
 
-updateUserById(req,res){
-    User.findOneAndUpdate({_id: req.params.userID},{req.body})
+function updateUserById(req,res) {
+    User.findOneAndUpdate({_id:req.params.userID},{
+        username: req.body.username,
+        email: req.body.email,
+        thoughts: req.body.thoughts,
+        friends: req.body.friends
+    })
         .then(updatedUser => res.status(200).json(updatedUser))
         .catch(err => res.status(500).json(err))
 }
 
-deleteUserById(req,res) {
+function deleteUserById(req,res) {
     User.findOneAndDelete({_id: req.params.userID},
         (err, data) => {
             if (data) {
