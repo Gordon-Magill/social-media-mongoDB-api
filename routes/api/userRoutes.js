@@ -7,11 +7,10 @@ const {
   deleteUserById,
 } = require("../../controllers/userController.js");
 
-router.route("/")
-    .get(getAllUsers)
-    .post(createUser);
+router.route("/").get(getAllUsers).post(createUser);
 
-router.route("/:userID")
+router
+  .route("/:userID")
   .get(getUserById)
   .put(updateUserById)
   .delete(deleteUserById);
