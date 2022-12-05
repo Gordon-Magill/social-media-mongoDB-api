@@ -8,7 +8,7 @@ const reactionSchema = new Schema({
   },
   reactionBody: {
     type: String,
-    require: true,
+    required: true,
     maxLength: 280,
   },
   username: {
@@ -44,7 +44,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: [true, "Username for thought is required!"],
     },
-    // reactions: [reactionSchema],
+    reactions: [ reactionSchema ]
   },
   {
     toJSON: {
@@ -55,7 +55,7 @@ const thoughtSchema = new Schema(
 );
 
 thoughtSchema.virtual("reactionCount").get(function () {
-  return reactions.length;
+  return this.reactions.length;
 });
 
 const Thought = model("thought", thoughtSchema);

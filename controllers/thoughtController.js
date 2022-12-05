@@ -35,22 +35,27 @@ function createThought(req, res) {
 }
 
 function getThoughtById(req, res) {
-  Thought.findById(eq.params.thoughtId)
-    .select("-__v")
-    .populate("reactions")
+  Thought.findById(req.params.thoughtId)
+    // .select("-__v")
+    // .populate("reactions")
     .then((thought) => {
-      !thought
+      try{
+        !thought
         ? res.status(404).json({ message: "No thought with that ID." })
         : res.status(200).json(thought);
+      } catch (err) {
+        console.log(err)
+      }
+      
     })
     .catch((err) => res.status(500).json(err));
 }
 
 function updateThoughtById(req, res) {
   Thought.findByIdAndUpdate(
-    req.params.thoughtId,
-    {
-      $set: req.body,
+    req.params.thoughtId,{
+      thoughtText: req.body.thoughtText,
+      username: req.body.username
     },
     { runValidators: true, new: true }
   )
