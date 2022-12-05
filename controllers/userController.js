@@ -13,8 +13,8 @@ function createUser(req, res) {
 }
 
 function getUserById(req, res) {
-  console.log(JSON.stringify(req.params.userID));
-  User.findById(req.params.userID)
+  console.log(JSON.stringify(req.params.userId));
+  User.findById(req.params.userId)
     .select("-__v")
     .populate("thoughts")
     .populate("friends")
@@ -22,7 +22,7 @@ function getUserById(req, res) {
       !user
         ? res
             .status(404)
-            .json({ message: `No user with ID ${req.params.userID}` })
+            .json({ message: `No user with ID ${req.params.userId}` })
         : res.status(200).json(user);
     })
     .catch((err) => res.status(500).json(err));
@@ -30,7 +30,7 @@ function getUserById(req, res) {
 
 function updateUserById(req, res) {
   User.findByIdAndUpdate(
-    req.params.userID,
+    req.params.userId,
     {
       $set: req.body,
     },
@@ -44,20 +44,55 @@ function updateUserById(req, res) {
 }
 
 function deleteUserById(req, res) {
-  User.findByIdAndDelete(req.params.userID, (err, data) => {
+  User.findByIdAndDelete(req.params.userId, (err, data) => {
     if (data) {
       res.status(200).json(data);
     } else {
       res
         .status(500)
-        .json({ message: `Error deleting user ${req.params.userID}` });
+        .json({ message: `Error deleting user ${req.params.userId}` });
     }
   });
 }
 
-function addFriendById(req, res) {}
+function addFriendById(req, res) {
+  User.findByIdAndUpdate(
+    req.params.userId,
+    {
+      $addToSet: {
+        friends: req.params.friendId,
+      },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate('friends')
+    .then((updatedUser) => {
+      !updatedUser
+        ? res.status(404).json({ message: "No user with that ID" })
+        : res.status(200).json(updatedUser);
+    })
+    .catch((err) => res.status(500).json(err));
+}
 
-function deleteFriendById(req, res) {}
+function deleteFriendById(req, res) {
+  User.findByIdAndUpdate(req.params.userId, {
+    $pull: {
+      friends: {
+        _id: req.params.friendId,
+      },
+    },
+  }, {new:true})
+    .populate('friends')
+    .then(updatedUser => {
+        !updatedUser
+            ? res.status(400).json({message: "No user with that ID"})
+            : res.status(200).json(updatedUser)
+    })
+    .catch(err => res.status(500).json(err))
+  
+}
 
 module.exports = {
   getAllUsers,

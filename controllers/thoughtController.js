@@ -1,5 +1,5 @@
-const {Thought} = require("../models/Thought");
-const {User} = require("../models/User");
+const { Thought } = require("../models/Thought");
+const { User } = require("../models/User");
 
 function getAllThoughts(req, res) {
   Thought.find()
@@ -8,7 +8,7 @@ function getAllThoughts(req, res) {
 }
 
 function createThought(req, res) {
-    console.log(req.body)
+  console.log(req.body);
   Thought.create(req.body)
     .then((newThought) => {
       return User.findByIdAndUpdate(
@@ -19,12 +19,11 @@ function createThought(req, res) {
         {
           new: true,
         }
-      )
-        .then(updatedUser => {
-            !updatedUser
-                ? res.status(404).json({message: "No user with that ID"})
-                : res.status(200).json(updatedUser)
-        });
+      ).then((updatedUser) => {
+        !updatedUser
+          ? res.status(404).json({ message: "No user with that ID" })
+          : res.status(200).json(updatedUser);
+      });
     })
     .catch((err) => res.status(500).json(err));
 }
@@ -116,12 +115,12 @@ function deleteReactionById(req, res) {
     }
   )
     .select("-__v")
-    .populate("reactions")  
+    .populate("reactions")
     .then((updatedThought) => {
-        !updatedThought
-            ? res.status(404).json({ message: "No thought with that Id" })
-            : res.status(200).json(updatedThought);
-        })
+      !updatedThought
+        ? res.status(404).json({ message: "No thought with that Id" })
+        : res.status(200).json(updatedThought);
+    })
     .catch((err) => res.status(500).json(err));
 }
 
