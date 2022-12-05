@@ -1,6 +1,27 @@
 // Include schema for Reactions as a subdocument to Thought
 const { Schema, model, models, Types } = require("mongoose");
 
+const reactionSchema = new Schema({
+  reactionID: {
+    type: Types.ObjectId,
+    default: new Types.ObjectId(),
+  },
+  reactionBody: {
+    type: String,
+    require: true,
+    maxLength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: (date) => date.toDateString(),
+  },
+});
+
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -18,28 +39,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: [true, "Username for thought is required!"],
     },
-    reactions: [
-      {
-        reactionID: {
-          type: Schema.Types.ObjectId,
-          default: new Types.ObjectId,
-        },
-        reactionBody: {
-          type: String,
-          require: true,
-          maxLength: 280,
-        },
-        username: {
-          type: String,
-          required: true,
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-          get: (date) => date.toDateString(),
-        },
-      },
-    ],
+    reactions: [reactionSchema],
   },
   {
     toJSON: {
