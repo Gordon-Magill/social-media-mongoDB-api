@@ -2,7 +2,10 @@ const User = require("../models/User");
 
 function getAllUsers(req, res) {
   User.find()
-    .then((users) => res.status(200).json(users))
+    .then((users) => {
+      console.log(users)
+      res.status(200).json(users)
+    })
     .catch((err) => res.status(500).json(err));
 }
 

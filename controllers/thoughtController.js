@@ -1,20 +1,26 @@
-const { Thought } = require("../models/Thought");
-const { User } = require("../models/User");
+const Thought = require("../models/Thought");
+const User = require("../models/User");
 
 function getAllThoughts(req, res) {
   Thought.find()
-    .then((thoughts) => res.status(200).json(thoughts))
+    .then((thoughts) => {
+      console.log(thoughts)
+      res.status(200).json(thoughts)
+    })
     .catch((err) => res.status(500).json(err));
 }
 
 function createThought(req, res) {
   console.log(req.body);
-  Thought.create(req.body)
+  Thought.create({
+    thoughtText: req.body.thoughtText,
+    username: req.body.username
+  })
     .then((newThought) => {
       return User.findByIdAndUpdate(
         req.body.userId,
         {
-          $addToSet: { thoughts: newThought._id },
+          $addToSet: { thoughts: newThought},
         },
         {
           new: true,
