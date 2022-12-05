@@ -17,8 +17,9 @@ router
   .put(updateUserById)
   .delete(deleteUserById);
 
-router.route("/:userID/friend").post(addFriendById);
-
-router.route("/:userId/friend/:friendId").delete(deleteFriendById);
+router
+  .route("/:userId/friends/:friendId")
+  .post(addFriendById)
+  .delete(deleteFriendById);
 
 module.exports = router;

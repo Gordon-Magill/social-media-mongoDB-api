@@ -67,7 +67,7 @@ function addFriendById(req, res) {
       new: true,
     }
   )
-    .populate('friends')
+    .populate("friends")
     .then((updatedUser) => {
       !updatedUser
         ? res.status(404).json({ message: "No user with that ID" })
@@ -76,22 +76,25 @@ function addFriendById(req, res) {
     .catch((err) => res.status(500).json(err));
 }
 
+// 
 function deleteFriendById(req, res) {
-  User.findByIdAndUpdate(req.params.userId, {
-    $pull: {
-      friends: {
-        _id: req.params.friendId,
+  console.log(req.params);
+  User.findByIdAndUpdate(
+    req.params.userId,
+    {
+      $pull: {
+        friends: req.params.friendId,
       },
     },
-  }, {new:true})
-    .populate('friends')
-    .then(updatedUser => {
-        !updatedUser
-            ? res.status(400).json({message: "No user with that ID"})
-            : res.status(200).json(updatedUser)
+    { new: true, runValidators: true }
+  )
+    // .populate("friends")
+    .then((updatedUser) => {
+      !updatedUser
+        ? res.status(400).json({ message: "No user with that ID" })
+        : res.status(200).json(updatedUser);
     })
-    .catch(err => res.status(500).json(err))
-  
+    .catch((err) => res.status(500).json(err));
 }
 
 module.exports = {
