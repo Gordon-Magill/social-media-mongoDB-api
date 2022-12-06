@@ -1,9 +1,23 @@
 const User = require("../models/User");
 
+function userRetrieval(req,res) {
+  console.log('userRetrieval called...')
+  // console.log(req.body)
+  // console.log(Object.keys(req.body).length)
+  if (Object.keys(req.body).length==0) {
+    console.log('Empty request body, getting all Users')
+    getAllUsers(req,res)
+  } else {
+    console.log('Request body found, getting one User')
+    getUserById(req,res)
+  }
+}
+
 function getAllUsers(req, res) {
+  console.log('getAllUsers called...')
   User.find()
     .then((users) => {
-      console.log(users)
+      // console.log(users)
       users.length===0
         ? res.status(404).json({message: "There are no Users!"})
         : res.status(200).json(users)
@@ -12,18 +26,21 @@ function getAllUsers(req, res) {
 }
 
 function createUser(req, res) {
+  console.log('createUser called...')
   User.create(req.body)
     .then((newData) => res.status(200).json(newData))
     .catch((err) => res.status(500).json(err));
 }
 
 function getUserById(req, res) {
-  console.log(JSON.stringify(req.body.userId));
+  console.log('getUserById called...')
+  // console.log(req.body.userId);
   User.findById(req.body.userId)
     .select("-__v")
     .populate("thoughts")
     .populate("friends")
     .then((user) => {
+      // console.log(user)
       !user
         ? res
             .status(404)
@@ -34,6 +51,7 @@ function getUserById(req, res) {
 }
 
 function updateUserById(req, res) {
+  console.log('updateUserById called...')
   User.findByIdAndUpdate(
     req.body.userId,
     {
@@ -49,6 +67,7 @@ function updateUserById(req, res) {
 }
 
 function deleteUserById(req, res) {
+  console.log('deleteUserById called...')
   User.findByIdAndDelete(req.body.userId, (err, data) => {
     if (data) {
       res.status(200).json(data);
@@ -61,6 +80,7 @@ function deleteUserById(req, res) {
 }
 
 function addFriendById(req, res) {
+  console.log('addFriendById called...')
   User.findByIdAndUpdate(
     req.params.userId,
     {
@@ -83,7 +103,8 @@ function addFriendById(req, res) {
 
 // 
 function deleteFriendById(req, res) {
-  console.log(req.params);
+  console.log('deleteFriendById called...')
+  // console.log(req.params);
   User.findByIdAndUpdate(
     req.params.userId,
     {
@@ -103,9 +124,8 @@ function deleteFriendById(req, res) {
 }
 
 module.exports = {
-  getAllUsers,
+  userRetrieval,
   createUser,
-  getUserById,
   updateUserById,
   deleteUserById,
   addFriendById,
