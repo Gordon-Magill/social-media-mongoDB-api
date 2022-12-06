@@ -4,8 +4,9 @@ const User = require("../models/User");
 function getAllThoughts(req, res) {
   Thought.find()
     .then((thoughts) => {
-      console.log(thoughts)
-      res.status(200).json(thoughts)
+      thoughts.length===0
+        ? res.status(404).json({message: "There are no Thoughts!"})
+        : res.status(200).json(thoughts)
     })
     .catch((err) => res.status(500).json(err));
 }
@@ -17,7 +18,7 @@ function createThought(req, res) {
     username: req.body.username
   })
     .then((newThought) => {
-      return User.findByIdAndUpdate(
+      User.findByIdAndUpdate(
         req.body.userId,
         {
           $addToSet: { thoughts: newThought},
