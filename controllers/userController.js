@@ -27,7 +27,7 @@ function getUserById(req, res) {
       !user
         ? res
             .status(404)
-            .json({ message: `No user with ID ${req.params.userId}` })
+            .json({ message: `No user with ID ${req.body.userId}` })
         : res.status(200).json(user);
     })
     .catch((err) => res.status(500).json(err));
@@ -35,7 +35,7 @@ function getUserById(req, res) {
 
 function updateUserById(req, res) {
   User.findByIdAndUpdate(
-    req.params.userId,
+    req.body.userId,
     {
       $set: req.body,
     },
@@ -49,13 +49,13 @@ function updateUserById(req, res) {
 }
 
 function deleteUserById(req, res) {
-  User.findByIdAndDelete(req.params.userId, (err, data) => {
+  User.findByIdAndDelete(req.body.userId, (err, data) => {
     if (data) {
       res.status(200).json(data);
     } else {
       res
         .status(500)
-        .json({ message: `Error deleting user ${req.params.userId}` });
+        .json({ message: `Error deleting user ${req.body.userId}` });
     }
   });
 }

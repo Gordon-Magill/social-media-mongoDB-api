@@ -36,9 +36,9 @@ function createThought(req, res) {
 }
 
 function getThoughtById(req, res) {
-  Thought.findById(req.params.thoughtId)
-    // .select("-__v")
-    // .populate("reactions")
+  Thought.findById(req.body.thoughtId)
+    .select("-__v")
+    .populate("reactions")
     .then((thought) => {
       try{
         !thought
@@ -54,7 +54,7 @@ function getThoughtById(req, res) {
 
 function updateThoughtById(req, res) {
   Thought.findByIdAndUpdate(
-    req.params.thoughtId,{
+    req.body.thoughtId,{
       thoughtText: req.body.thoughtText,
       username: req.body.username
     },
@@ -71,14 +71,14 @@ function updateThoughtById(req, res) {
 }
 
 function deleteThoughtById(req, res) {
-  Thought.findByIdAndRemove(req.params.thoughtId)
+  Thought.findByIdAndRemove(req.body.thoughtId)
     .then((deletedThought) => {
       !deletedThought
         ? res.status(404).json({ message: "No thought with that ID." })
         : User.findOneAndUpdate(
-            { thoughts: req.params.thoughtId },
+            { thoughts: req.body.thoughtId },
             {
-              $pull: { thoughts: req.params.thoughtId },
+              $pull: { thoughts: req.body.thoughtId },
             },
             {
               new: true,
