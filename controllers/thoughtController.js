@@ -120,7 +120,7 @@ function deleteReactionById(req, res) {
     {
       $pull: {
         reactions: {
-          reactionID: req.params.reactionId,
+          reactionID: req.body.reactionId,
         },
       },
     },
