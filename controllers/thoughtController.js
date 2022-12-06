@@ -1,7 +1,19 @@
 const Thought = require("../models/Thought");
 const User = require("../models/User");
 
+function thoughtRetrieval(req,res) {
+  console.log('thoughtRetrieval called...')
+  if (Object.keys(req.body).length==0) {
+    console.log('Empty request body, getting all Thoughts')
+    getAllThoughts(req,res)
+  } else {
+    console.log('Request body found, getting one Thought')
+    getThoughtById(req,res)
+  }
+}
+
 function getAllThoughts(req, res) {
+  console.log('getAllThoughts called...')
   Thought.find()
     .then((thoughts) => {
       thoughts.length===0
@@ -12,7 +24,7 @@ function getAllThoughts(req, res) {
 }
 
 function createThought(req, res) {
-  console.log(req.body);
+  console.log('createThought called...')
   Thought.create({
     thoughtText: req.body.thoughtText,
     username: req.body.username
@@ -36,23 +48,20 @@ function createThought(req, res) {
 }
 
 function getThoughtById(req, res) {
+  console.log('getThoughtById called...')
   Thought.findById(req.body.thoughtId)
     .select("-__v")
     .populate("reactions")
     .then((thought) => {
-      try{
         !thought
         ? res.status(404).json({ message: "No thought with that ID." })
         : res.status(200).json(thought);
-      } catch (err) {
-        console.log(err)
-      }
-      
     })
     .catch((err) => res.status(500).json(err));
 }
 
 function updateThoughtById(req, res) {
+  console.log('updateThoughtById called...')
   Thought.findByIdAndUpdate(
     req.body.thoughtId,{
       thoughtText: req.body.thoughtText,
@@ -71,6 +80,7 @@ function updateThoughtById(req, res) {
 }
 
 function deleteThoughtById(req, res) {
+  console.log('deleteThoughtById called...')
   Thought.findByIdAndRemove(req.body.thoughtId)
     .then((deletedThought) => {
       !deletedThought
@@ -93,6 +103,7 @@ function deleteThoughtById(req, res) {
 }
 
 function addReactionById(req, res) {
+  console.log('addReactionById called...')
   Thought.findByIdAndUpdate(
     req.params.thoughtId,
     {
@@ -116,6 +127,7 @@ function addReactionById(req, res) {
 }
 
 function deleteReactionById(req, res) {
+  console.log('deleteReactionById called...')
   Thought.findByIdAndUpdate(
     req.params.thoughtId,
     {
@@ -141,9 +153,8 @@ function deleteReactionById(req, res) {
 }
 
 module.exports = {
-  getAllThoughts,
+  thoughtRetrieval,
   createThought,
-  getThoughtById,
   updateThoughtById,
   deleteThoughtById,
   addReactionById,
