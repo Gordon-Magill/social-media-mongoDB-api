@@ -82,7 +82,11 @@ function deleteThoughtById(req, res) {
             {
               new: true,
             }
-          );
+          ).then(updatedUser => {
+            !updatedUser
+              ? res.status(404).json({message: "No user with that ID."})
+              : res.status(200).json(updatedUser)
+          });
     })
     .catch((err) => res.staus(500).json(err));
 }
