@@ -69,21 +69,27 @@ function updateUserById(req, res) {
 
 function deleteUserById(req, res) {
   console.log("deleteUserById called...");
-  User.findByIdAndDelete(req.body.userId, (err, deletedUser) => {
-    console.log("Deleted user data?: ", JSON.stringify(deletedUser));
-    if (deletedUser) {
+  User.findByIdAndRemove(req.body.userId)
+    .then((deletedUser) => {
+      // If the deleted user had thoughts, iteratively delete each Thought
+
+      // ***********
+      // Currently trying to get this to delete all the Thoughts that were associated with the deleted User
+      // ***********
+
+      console.log("Deleted user data: ", JSON.stringify(deletedUser));
       if (deletedUser.thoughts.length > 0) {
         deletedUser.thoughts.forEach((thoughtId) => {
-          Thought.findByIdAndDelete(thoughtId);
+          console.log('Deleting Thought:', thoughtId,'...')
+          Thought.findByIdAndRemove(thoughtId)
+            .then(deletedThought => {
+              console.log(`Thought ID ${thoughtId} deleted...`)
+            });
         });
       }
-      res.status(200).json(data);
-    } else {
-      res
-        .status(500)
-        .json({ message: `Error deleting user ${req.body.userId}` });
-    }
-  }).catch((err) => res.status(500).json(err));
+      res.status(200).json(deletedUser);
+    })
+    .catch((err) => res.status(500).json(err));
 }
 
 function addFriendById(req, res) {
