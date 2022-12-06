@@ -1,19 +1,21 @@
 // Include schema for Reactions as a subdocument to Thought
 const { Schema, model, models, Types } = require("mongoose");
 
+// Subdocument schema for a reaction / comment to a Thought / post
 const reactionSchema = new Schema({
+  // Create an ID since this won't be a top level document
   reactionID: {
     type: Types.ObjectId,
     default: new Types.ObjectId(),
   },
   reactionBody: {
     type: String,
-    required: true,
+    required: [true,"Reaction body text is required!"],
     maxLength: 280,
   },
   username: {
     type: String,
-    required: true,
+    required: [true,"Reaction username is required!"]
   },
   createdAt: {
     type: Date,
@@ -27,6 +29,7 @@ const reactionSchema = new Schema({
   id:false
 });
 
+// Schema for a Thought, effectively a small text post
 const thoughtSchema = new Schema(
   {
     thoughtText: {

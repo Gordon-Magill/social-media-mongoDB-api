@@ -18,8 +18,8 @@ function createUser(req, res) {
 }
 
 function getUserById(req, res) {
-  console.log(JSON.stringify(req.params.userId));
-  User.findById(req.params.userId)
+  console.log(JSON.stringify(req.body.userId));
+  User.findById(req.body.userId)
     .select("-__v")
     .populate("thoughts")
     .populate("friends")

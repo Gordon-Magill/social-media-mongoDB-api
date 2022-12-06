@@ -9,11 +9,11 @@ const {
   deleteReactionById,
 } = require("../../controllers/thoughtController.js");
 
-router.route("/").get(getAllThoughts).post(createThought);
-
 router
-  .route("/:thoughtId")
+  .route("/")
+  .get(getAllThoughts)
   .get(getThoughtById)
+  .post(createThought)
   .put(updateThoughtById)
   .delete(deleteThoughtById);
 

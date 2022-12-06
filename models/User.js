@@ -1,5 +1,11 @@
 const { Schema, model } = require("mongoose");
 
+// Custom validator to check for valid email address
+function emailValidation(email) {
+  return /(\w+?)@(\w+?\.(com|org|net|gov|edu))/.test(email);
+}
+
+// Schema definition for a basic User
 const userSchema = new Schema(
   {
     username: {
@@ -13,8 +19,9 @@ const userSchema = new Schema(
       required: [true, "Email is required!"],
       unique: true,
       validate: {
+        //Using email validation defined above
         validator: emailValidation,
-        message: (emailInput) => `${emailInput.value} is not a valid email!`,
+        message: (emailInput) => `${emailInput} is not a valid email!`,
       },
     },
     thoughts: [
@@ -32,20 +39,19 @@ const userSchema = new Schema(
   },
   {
     toJSON: {
-      virtuals: true,
+      virtuals: true, //Enable the use of virtual properties in JSON output
     },
     id: false,
   }
 );
 
-function emailValidation(email) {
-  return /(\w+?)@(\w+?\.(com|org|net|gov|edu))/.test(email);
-}
-
+// Virtual property that's just the number of this User's friends
 userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
 });
 
+// Create the User model based on the above schema
 const User = model("user", userSchema);
 
+// Export User for use in the controllers
 module.exports = User;
