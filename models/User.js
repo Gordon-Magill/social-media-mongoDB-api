@@ -41,6 +41,7 @@ const userSchema = new Schema(
     toJSON: {
       virtuals: true, //Enable the use of virtual properties in JSON output
     },
+    id: false
   }
 );
 
