@@ -4,7 +4,7 @@
 
 ## Description
 
-A basic demo of a database API using MongoDB / Mongoose w/ Express. Perform CRUD operations on Users, Thoughts (like posts), and Reactions (like comments) on Thoughts.
+A basic demo of a database API using MongoDB / Mongoose w/ Express. Perform CRUD operations on Users, Thoughts (like posts), and Reactions (like comments) on Thoughts. [Here's a video demonstration of the system.](http://www.google.com)
 
 ## Table of Contents
 
