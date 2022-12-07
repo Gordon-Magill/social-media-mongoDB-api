@@ -8,6 +8,7 @@ const {
   deleteFriendById,
 } = require("../../controllers/userController.js");
 
+// Handle basic User CRUD operations with all data in req.body
 router
   .route("/")
   .get(userRetrieval)
@@ -15,6 +16,7 @@ router
   .put(updateUserById)
   .delete(deleteUserById);
 
+// For friend formation and dissolution, exhcnage data in req.params
 router
   .route("/:userId/friends/:friendId")
   .post(addFriendById)

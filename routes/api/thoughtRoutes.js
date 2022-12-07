@@ -8,6 +8,7 @@ const {
   deleteReactionById,
 } = require("../../controllers/thoughtController.js");
 
+// Handle basic CRUD operations with data in req.body
 router
   .route("/")
   .get(thoughtRetrieval)
@@ -15,6 +16,7 @@ router
   .put(updateThoughtById)
   .delete(deleteThoughtById);
 
+// For adding reactions, get the thoughtId in req.params but the reactionId through req.body
 router
   .route("/:thoughtId/reactions/")
   .post(addReactionById)
