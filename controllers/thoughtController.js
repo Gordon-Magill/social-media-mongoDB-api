@@ -1,6 +1,6 @@
 const Thought = require("../models/Thought");
 const User = require("../models/User");
-const {Types} = require('mongoose')
+const { Types } = require("mongoose");
 
 function thoughtRetrieval(req, res) {
   console.log("thoughtRetrieval called...");

@@ -78,11 +78,10 @@ function deleteUserById(req, res) {
       console.log("Deleted user data: ", JSON.stringify(deletedUser));
       if (deletedUser.thoughts.length > 0) {
         deletedUser.thoughts.forEach((thoughtId) => {
-          console.log('Deleting Thought:', thoughtId,'...')
-          Thought.findByIdAndRemove(thoughtId)
-            .then(deletedThought => {
-              console.log(`Thought ID ${thoughtId} deleted...`)
-            });
+          console.log("Deleting Thought:", thoughtId, "...");
+          Thought.findByIdAndRemove(thoughtId).then((deletedThought) => {
+            console.log(`Thought ID ${thoughtId} deleted...`);
+          });
         });
       }
       res.status(200).json(deletedUser);

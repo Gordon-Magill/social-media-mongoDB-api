@@ -40,13 +40,18 @@ const userSchema = new Schema(
   {
     toJSON: {
       virtuals: true, //Enable the use of virtual properties in JSON output
-    }
+    },
   }
 );
 
 // Virtual property that's just the number of this User's friends
 userSchema.virtual("friendCount").get(function () {
   return this.friends.length;
+});
+
+// Virtual property that's just the number of this User's thoughts
+userSchema.virtual("thoughtCount").get(function () {
+  return this.thoughts.length;
 });
 
 // Create the User model based on the above schema

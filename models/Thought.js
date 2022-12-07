@@ -2,33 +2,36 @@
 const { Schema, model, models, Types } = require("mongoose");
 
 // Subdocument schema for a reaction / comment to a Thought / post
-const reactionSchema = new Schema({
-  // Create an ID since this won't be a top level document
-  reactionID: {
-    type: Schema.Types.ObjectId,
-    default: Types.ObjectId
+const reactionSchema = new Schema(
+  {
+    // Create an ID since this won't be a top level document
+    reactionID: {
+      type: Schema.Types.ObjectId,
+      default: Types.ObjectId,
+    },
+    reactionBody: {
+      type: String,
+      required: [true, "Reaction body text is required!"],
+      maxLength: 280,
+    },
+    username: {
+      type: String,
+      required: [true, "Reaction username is required!"],
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: (date) => date.toDateString(),
+    },
   },
-  reactionBody: {
-    type: String,
-    required: [true,"Reaction body text is required!"],
-    maxLength: 280,
-  },
-  username: {
-    type: String,
-    required: [true,"Reaction username is required!"]
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: (date) => date.toDateString(),
-  },
-},{
-  toJSON: {
-    virtuals:true,
-    getters:true
-  },
-  _id:false
-});
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    _id: false,
+  }
+);
 
 // Schema for a Thought, effectively a small text post
 const thoughtSchema = new Schema(
@@ -48,13 +51,13 @@ const thoughtSchema = new Schema(
       type: String,
       required: [true, "Username for thought is required!"],
     },
-    reactions: [ reactionSchema ]
+    reactions: [reactionSchema],
   },
   {
     toJSON: {
       virtuals: true,
-      getters:true
-    }
+      getters: true,
+    },
   }
 );
 
