@@ -72,11 +72,6 @@ function deleteUserById(req, res) {
   User.findByIdAndRemove(req.body.userId)
     .then((deletedUser) => {
       // If the deleted user had thoughts, iteratively delete each Thought
-
-      // ***********
-      // Currently trying to get this to delete all the Thoughts that were associated with the deleted User
-      // ***********
-
       console.log("Deleted user data: ", JSON.stringify(deletedUser));
       if (deletedUser.thoughts.length > 0) {
         deletedUser.thoughts.forEach((thoughtId) => {
