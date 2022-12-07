@@ -5,8 +5,8 @@ const { Schema, model, models, Types } = require("mongoose");
 const reactionSchema = new Schema({
   // Create an ID since this won't be a top level document
   reactionID: {
-    type: Types.ObjectId,
-    default: new Types.ObjectId(),
+    type: Schema.Types.ObjectId,
+    default: Types.ObjectId
   },
   reactionBody: {
     type: String,
@@ -27,7 +27,7 @@ const reactionSchema = new Schema({
     virtuals:true,
     getters:true
   },
-  id:false
+  _id:false
 });
 
 // Schema for a Thought, effectively a small text post
@@ -54,8 +54,7 @@ const thoughtSchema = new Schema(
     toJSON: {
       virtuals: true,
       getters:true
-    },
-    id: false,
+    }
   }
 );
 

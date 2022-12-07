@@ -17,6 +17,7 @@ function userRetrieval(req, res) {
 function getAllUsers(req, res) {
   console.log("getAllUsers called...");
   User.find()
+    .select("-__v")
     .then((users) => {
       // console.log(users)
       users.length === 0
@@ -63,6 +64,7 @@ function updateUserById(req, res) {
       new: true,
     }
   )
+    .select("-__v")
     .then((updatedUser) => res.status(200).json(updatedUser))
     .catch((err) => res.status(500).json(err));
 }
@@ -70,6 +72,7 @@ function updateUserById(req, res) {
 function deleteUserById(req, res) {
   console.log("deleteUserById called...");
   User.findByIdAndRemove(req.body.userId)
+    .select("-__v")
     .then((deletedUser) => {
       // If the deleted user had thoughts, iteratively delete each Thought
       console.log("Deleted user data: ", JSON.stringify(deletedUser));
@@ -100,7 +103,8 @@ function addFriendById(req, res) {
       new: true,
     }
   )
-    .populate("friends")
+    .select("-__v")
+    // .populate("friends")
     .then((updatedUser) => {
       !updatedUser
         ? res.status(404).json({ message: "No user with that ID" })
@@ -122,6 +126,7 @@ function deleteFriendById(req, res) {
     },
     { new: true, runValidators: true }
   )
+    .select("-__v")
     // .populate("friends")
     .then((updatedUser) => {
       !updatedUser
