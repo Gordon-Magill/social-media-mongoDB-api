@@ -1,6 +1,7 @@
 # MongoDB Social Media API Demo
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ![Screenshot of sample HTTP route](./assets/social%20media%20API.jpg)
 
 ## Description
